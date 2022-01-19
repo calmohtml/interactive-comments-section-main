@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Reply from "../../images/icon-reply.svg";
+import UserInput from "./UserInput";
 
 const Main = () => {
   const Container = styled.main`
@@ -12,6 +13,7 @@ const Main = () => {
   `;
 
   /**/
+
   const CommentsContainer = styled.section`
     /* background: var(--white); */
   `;
@@ -23,6 +25,7 @@ const Main = () => {
     margin-bottom: 10px;
     border-radius: 7.5px;
     background: var(--white);
+    margin-top: 10px;
   `;
 
   const CommentsLikeButton = styled.div`
@@ -61,7 +64,7 @@ const Main = () => {
     }
 
     p {
-      margin: 6.5px auto;
+      margin: 8px auto;
       color: var(--grayish-blue);
     }
   `;
@@ -84,29 +87,40 @@ const Main = () => {
     }
   `;
 
-  const CommentsReplyButton = styled.span`
+  const CommentsReplyButton = styled.button`
     display: flex;
     align-items: center;
+    background: transparent;
+    border: none;
 
     #reply {
       color: var(--moderate-blue);
-      font-weight: 500;
-      margin-left: 5px;
+      font-weight: 700;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+
+    :hover {
+      opacity: 0.7;
     }
   `;
+
   /**/
 
   const RepliesContainer = styled.section`
-    /* background: var(--white); */
+    border-left: 1px solid var(--grayish-blue);
+    margin-left: 50px;
   `;
 
   const Replies = styled.article`
     display: grid;
     grid-template-columns: 5% auto;
     padding: 10px;
+    margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 7.5px;
     background: var(--white);
+    margin-left: 60px;
   `;
 
   const RepliesLikeButton = styled.div`
@@ -145,8 +159,13 @@ const Main = () => {
     }
 
     p {
-      margin: 6.5px auto;
+      margin: 8px auto;
       color: var(--grayish-blue);
+
+      span {
+        color: var(--moderate-blue);
+        font-weight: 500;
+      }
     }
   `;
 
@@ -168,14 +187,21 @@ const Main = () => {
     }
   `;
 
-  const RepliesReplyButton = styled.span`
+  const RepliesReplyButton = styled.button`
     display: flex;
     align-items: center;
+    background: transparent;
+    border: none;
 
     #reply {
       color: var(--moderate-blue);
-      font-weight: 500;
-      margin-left: 5px;
+      font-weight: 700;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+
+    :hover {
+      opacity: 0.7;
     }
   `;
 
@@ -183,9 +209,9 @@ const Main = () => {
 
   const getData = async () => {
     try {
-      const response = await fetch("data.json");
+      const response = await fetch("http://localhost:3001/comments");
       const data = await response.json();
-      setComments(data.comments);
+      setComments(data);
     } catch (error) {
       console.error(error);
     }
@@ -252,7 +278,7 @@ const Main = () => {
                       </RepliesReplyButton>
                     </div>
                     <p>
-                      @{replyingTo} {content}
+                      <span>@{replyingTo}</span> {content}
                     </p>
                   </RepliesInfo>
                 </Replies>
@@ -261,8 +287,25 @@ const Main = () => {
           )}
         </CommentsContainer>
       ))}
+      <UserInput />
     </Container>
   );
 };
 
 export default Main;
+/* 
+{
+  "id": 4,
+  "content": "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+  "createdAt": "2 days ago",
+  "score": 2,
+  "replyingTo": "ramsesmiron",
+  "user": {
+    "image": {
+      "png": "./images/avatars/image-juliusomo.png",
+      "webp": "./images/avatars/image-juliusomo.webp"
+    },
+    "username": "juliusomo"
+  }
+} 
+*/
