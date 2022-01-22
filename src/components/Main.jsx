@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Reply from "../../images/icon-reply.svg";
+import Delete from "../../images/icon-delete.svg";
 import UserInput from "./UserInput";
 
 const Main = () => {
@@ -95,6 +96,24 @@ const Main = () => {
 
     #reply {
       color: var(--moderate-blue);
+      font-weight: 700;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+
+    :hover {
+      opacity: 0.7;
+    }
+  `;
+
+  const CommentsDeleteButton = styled.button`
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+
+    #delete {
+      color: var(--soft-red);
       font-weight: 700;
       margin-left: 7px;
       font-size: 13px;
@@ -205,8 +224,27 @@ const Main = () => {
     }
   `;
 
+  const RepliesDeleteButton = styled.button`
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+
+    #delete {
+      color: var(--soft-red);
+      font-weight: 700;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+
+    :hover {
+      opacity: 0.7;
+    }
+  `;
+
   const [comments, setComments] = useState([]);
 
+  // READ
   const getData = async () => {
     try {
       const response = await fetch("http://localhost:3001/comments");
@@ -216,6 +254,26 @@ const Main = () => {
       console.error(error);
     }
   };
+  // READ
+
+  // DELETE
+  const deleteComment = async (comment) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/comments/${comment.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+      setComments(comments.filter((comment) => comment.id !== comment.id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // DELETE
 
   useEffect(() => {
     getData();
@@ -247,6 +305,14 @@ const Main = () => {
                   <img src={Reply} alt="Reply icon" />
                   <p id="reply">Reply</p>
                 </CommentsReplyButton>
+                <CommentsDeleteButton
+                  onClick={() => {
+                    deleteComment({ id });
+                  }}
+                >
+                  <img src={Delete} alt="Delete icon" />
+                  <p id="delete">Delete</p>
+                </CommentsDeleteButton>
               </div>
               <p>{content}</p>
             </CommentsInfo>
@@ -276,6 +342,14 @@ const Main = () => {
                         <img src={Reply} alt="Reply icon" />
                         <p id="reply">Reply</p>
                       </RepliesReplyButton>
+                      <RepliesDeleteButton
+                        onClick={() => {
+                          deleteComment(id);
+                        }}
+                      >
+                        <img src={Delete} alt="Delete icon" />
+                        <p id="delete">Delete</p>
+                      </RepliesDeleteButton>
                     </div>
                     <p>
                       <span>@{replyingTo}</span> {content}

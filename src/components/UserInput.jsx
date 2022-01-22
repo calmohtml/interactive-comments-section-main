@@ -47,6 +47,7 @@ const UserInput = () => {
     color: var(--grayish-blue);
   `;
 
+  // CREATE
   const commentValue = useRef(null);
 
   const handleSubmit = async (event) => {
@@ -54,7 +55,6 @@ const UserInput = () => {
 
     try {
       let comment = commentValue.current.value;
-      console.log(comment);
       const response = await fetch("http://localhost:3001/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -81,6 +81,7 @@ const UserInput = () => {
       console.error(error);
     }
   };
+  // CREATE
 
   return (
     <UserInputContainer onSubmit={handleSubmit}>
