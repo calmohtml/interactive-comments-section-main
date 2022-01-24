@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import Reply from "../../images/icon-reply.svg";
 import Delete from "../../images/icon-delete.svg";
+import Edit from "../../images/icon-edit.svg";
 import UserInput from "./UserInput";
 import Modal from "./Modal";
 
@@ -266,7 +267,7 @@ const Main = () => {
   // READ
 
   // DELETE
-  /* const deleteComment = async (comment) => {
+  const deleteComment = async (comment) => {
     try {
       const response = await fetch(
         `http://localhost:3001/comments/${comment.id}`,
@@ -282,7 +283,7 @@ const Main = () => {
     } catch (error) {
       console.error(error);
     }
-  }; */
+  };
   // DELETE
 
   useEffect(() => {
@@ -312,18 +313,39 @@ const Main = () => {
                   <h4>{createdAt}</h4>
                 </CommentsUser>
                 <div>
-                  <CommentsReplyButton>
-                    <img src={Reply} alt="Reply icon" />
-                    <p id="reply">Reply</p>
-                  </CommentsReplyButton>
-                  <CommentsDeleteButton
-                    onClick={() => {
-                      deleteComment({ id });
-                    }}
-                  >
-                    <img src={Delete} alt="Delete icon" />
-                    <p id="delete">Delete</p>
-                  </CommentsDeleteButton>
+                  {/* Conditional Rendering */}
+                  {user.username != "juliusomo" ? (
+                    <CommentsReplyButton>
+                      <img src={Reply} alt="Reply icon" />
+                      <p id="reply">Reply</p>
+                    </CommentsReplyButton>
+                  ) : (
+                    <Fragment>
+                      <CommentsReplyButton>
+                        <img src={Edit} alt="Edit icon" />
+                        <p id="reply">Edit</p>
+                      </CommentsReplyButton>
+                      <CommentsDeleteButton
+                        /* 
+                        onClick={() => {
+                          deleteComment({ id });
+                        }} 
+                        */
+                        onClick={openModal}
+                      >
+                        <Modal
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          deleteComment={() => {
+                            deleteComment({ id });
+                          }}
+                        />
+                        <img src={Delete} alt="Delete icon" />
+                        <p id="delete">Delete</p>
+                      </CommentsDeleteButton>
+                    </Fragment>
+                  )}
+                  {/* Conditional Rendering */}
                 </div>
               </div>
               <p>{content}</p>
@@ -351,23 +373,39 @@ const Main = () => {
                         <h4>{createdAt}</h4>
                       </RepliesUser>
                       <div>
-                        <RepliesReplyButton>
-                          <img src={Reply} alt="Reply icon" />
-                          <p id="reply">Reply</p>
-                        </RepliesReplyButton>
-                        <RepliesDeleteButton
-                          /* onClick={() => {
-                            deleteComment(id);
-                          }} */
-                          onClick={openModal}
-                        >
-                          <Modal
-                            showModal={showModal}
-                            setShowModal={setShowModal}
-                          />
-                          <img src={Delete} alt="Delete icon" />
-                          <p id="delete">Delete</p>
-                        </RepliesDeleteButton>
+                        {/* Conditional Rendering */}
+                        {user.username != "juliusomo" ? (
+                          <RepliesReplyButton>
+                            <img src={Reply} alt="Reply icon" />
+                            <p id="reply">Reply</p>
+                          </RepliesReplyButton>
+                        ) : (
+                          <Fragment>
+                            <RepliesReplyButton>
+                              <img src={Edit} alt="Reply icon" />
+                              <p id="reply">Edit</p>
+                            </RepliesReplyButton>
+                            <RepliesDeleteButton
+                              /* 
+                              onClick={() => {
+                                deleteComment(id);
+                              }} 
+                              */
+                              onClick={openModal}
+                            >
+                              <Modal
+                                showModal={showModal}
+                                setShowModal={setShowModal}
+                                deleteComment={() => {
+                                  deleteComment(id);
+                                }}
+                              />
+                              <img src={Delete} alt="Delete icon" />
+                              <p id="delete">Delete</p>
+                            </RepliesDeleteButton>
+                          </Fragment>
+                        )}
+                        {/* Conditional Rendering */}
                       </div>
                     </div>
                     <p>
@@ -387,18 +425,18 @@ const Main = () => {
 
 export default Main;
 /* 
-{
-  "id": 4,
-  "content": "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
-  "createdAt": "2 days ago",
-  "score": 2,
-  "replyingTo": "ramsesmiron",
-  "user": {
-    "image": {
-      "png": "./images/avatars/image-juliusomo.png",
-      "webp": "./images/avatars/image-juliusomo.webp"
-    },
-    "username": "juliusomo"
-  }
-} 
+{user.username != "juliusomo" ? null : (
+                          <RepliesDeleteButton
+                            onClick={() => {
+                              deleteComment(id);
+                            }}
+                          >
+                            <Modal
+                              showModal={showModal}
+                              setShowModal={setShowModal}
+                            />
+                            <img src={Delete} alt="Delete icon" />
+                            <p id="delete">Delete</p>
+                          </RepliesDeleteButton>
+                        )} 
 */
