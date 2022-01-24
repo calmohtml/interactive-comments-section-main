@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import UserPhoto from "../../images/avatars/image-juliusomo.png";
 
@@ -74,7 +74,7 @@ const UserInput = () => {
           replies: [],
         }),
       });
-
+      window.location = "/";
       // Clean the textarea
       commentValue.current.value = "";
     } catch (error) {

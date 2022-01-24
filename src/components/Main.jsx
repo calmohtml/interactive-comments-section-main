@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Reply from "../../images/icon-reply.svg";
 import Delete from "../../images/icon-delete.svg";
 import UserInput from "./UserInput";
+import Modal from "./Modal";
 
 const Main = () => {
   const Container = styled.main`
@@ -93,6 +94,7 @@ const Main = () => {
     align-items: center;
     background: transparent;
     border: none;
+    margin: 0px 10px;
 
     #reply {
       color: var(--moderate-blue);
@@ -211,6 +213,7 @@ const Main = () => {
     align-items: center;
     background: transparent;
     border: none;
+    margin: 0px 10px;
 
     #reply {
       color: var(--moderate-blue);
@@ -244,6 +247,12 @@ const Main = () => {
 
   const [comments, setComments] = useState([]);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+    setShowModal((toggle) => !toggle);
+  };
+
   // READ
   const getData = async () => {
     try {
@@ -257,7 +266,7 @@ const Main = () => {
   // READ
 
   // DELETE
-  const deleteComment = async (comment) => {
+  /* const deleteComment = async (comment) => {
     try {
       const response = await fetch(
         `http://localhost:3001/comments/${comment.id}`,
@@ -269,10 +278,11 @@ const Main = () => {
         }
       );
       setComments(comments.filter((comment) => comment.id !== comment.id));
+      window.location = "/";
     } catch (error) {
       console.error(error);
     }
-  };
+  }; */
   // DELETE
 
   useEffect(() => {
@@ -301,18 +311,20 @@ const Main = () => {
                   <h3>{user.username}</h3>
                   <h4>{createdAt}</h4>
                 </CommentsUser>
-                <CommentsReplyButton>
-                  <img src={Reply} alt="Reply icon" />
-                  <p id="reply">Reply</p>
-                </CommentsReplyButton>
-                <CommentsDeleteButton
-                  onClick={() => {
-                    deleteComment({ id });
-                  }}
-                >
-                  <img src={Delete} alt="Delete icon" />
-                  <p id="delete">Delete</p>
-                </CommentsDeleteButton>
+                <div>
+                  <CommentsReplyButton>
+                    <img src={Reply} alt="Reply icon" />
+                    <p id="reply">Reply</p>
+                  </CommentsReplyButton>
+                  <CommentsDeleteButton
+                    onClick={() => {
+                      deleteComment({ id });
+                    }}
+                  >
+                    <img src={Delete} alt="Delete icon" />
+                    <p id="delete">Delete</p>
+                  </CommentsDeleteButton>
+                </div>
               </div>
               <p>{content}</p>
             </CommentsInfo>
@@ -338,18 +350,25 @@ const Main = () => {
                         <h3>{user.username}</h3>
                         <h4>{createdAt}</h4>
                       </RepliesUser>
-                      <RepliesReplyButton>
-                        <img src={Reply} alt="Reply icon" />
-                        <p id="reply">Reply</p>
-                      </RepliesReplyButton>
-                      <RepliesDeleteButton
-                        onClick={() => {
-                          deleteComment(id);
-                        }}
-                      >
-                        <img src={Delete} alt="Delete icon" />
-                        <p id="delete">Delete</p>
-                      </RepliesDeleteButton>
+                      <div>
+                        <RepliesReplyButton>
+                          <img src={Reply} alt="Reply icon" />
+                          <p id="reply">Reply</p>
+                        </RepliesReplyButton>
+                        <RepliesDeleteButton
+                          /* onClick={() => {
+                            deleteComment(id);
+                          }} */
+                          onClick={openModal}
+                        >
+                          <Modal
+                            showModal={showModal}
+                            setShowModal={setShowModal}
+                          />
+                          <img src={Delete} alt="Delete icon" />
+                          <p id="delete">Delete</p>
+                        </RepliesDeleteButton>
+                      </div>
                     </div>
                     <p>
                       <span>@{replyingTo}</span> {content}
