@@ -1,5 +1,21 @@
 import React, { useState, useEffect, Fragment } from "react";
-import styled from "styled-components";
+import {
+  Container,
+  CommentsContainer,
+  Comments,
+  CommentsLikeButton,
+  CommentsInfo,
+  CommentsUser,
+  CommentsReplyButton,
+  CommentsDeleteButton,
+  RepliesContainer,
+  Replies,
+  RepliesLikeButton,
+  RepliesInfo,
+  RepliesUser,
+  RepliesReplyButton,
+  RepliesDeleteButton,
+} from "../style/Main";
 import Reply from "../../images/icon-reply.svg";
 import Delete from "../../images/icon-delete.svg";
 import Edit from "../../images/icon-edit.svg";
@@ -7,248 +23,11 @@ import UserInput from "./UserInput";
 import Modal from "./Modal";
 
 const Main = () => {
-  const Container = styled.main`
-    display: grid;
-    place-content: center;
-    min-height: 100vh;
-    max-width: 45rem;
-    margin: 0 auto;
-  `;
-
-  /**/
-
-  const CommentsContainer = styled.section`
-    /* background: var(--white); */
-  `;
-
-  const Comments = styled.article`
-    display: grid;
-    grid-template-columns: 5% auto;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 7.5px;
-    background: var(--white);
-    margin-top: 10px;
-  `;
-
-  const CommentsLikeButton = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0px 3.5px;
-
-    div {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-      background: var(--light-gray);
-      border-radius: 5px;
-
-      button {
-        background: transparent;
-        border: none;
-        color: var(--light-grayish-blue);
-        font-weight: 700;
-      }
-
-      span {
-        color: var(--moderate-blue);
-        margin: 10px 0;
-        font-weight: 500;
-      }
-    }
-  `;
-
-  const CommentsInfo = styled.div`
-    margin: 0 10px;
-
-    div {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    p {
-      margin: 8px auto;
-      color: var(--grayish-blue);
-    }
-  `;
-
-  const CommentsUser = styled.span`
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 32px;
-    }
-
-    h3 {
-      margin: 0 10px;
-    }
-
-    h4 {
-      color: var(--grayish-blue);
-      font-weight: 400;
-    }
-  `;
-
-  const CommentsReplyButton = styled.button`
-    display: flex;
-    align-items: center;
-    background: transparent;
-    border: none;
-    margin: 0px 10px;
-
-    #reply {
-      color: var(--moderate-blue);
-      font-weight: 700;
-      margin-left: 7px;
-      font-size: 13px;
-    }
-
-    :hover {
-      opacity: 0.7;
-    }
-  `;
-
-  const CommentsDeleteButton = styled.button`
-    display: flex;
-    align-items: center;
-    background: transparent;
-    border: none;
-
-    #delete {
-      color: var(--soft-red);
-      font-weight: 700;
-      margin-left: 7px;
-      font-size: 13px;
-    }
-
-    :hover {
-      opacity: 0.7;
-    }
-  `;
-
-  /**/
-
-  const RepliesContainer = styled.section`
-    border-left: 1px solid var(--grayish-blue);
-    margin-left: 50px;
-  `;
-
-  const Replies = styled.article`
-    display: grid;
-    grid-template-columns: 5% auto;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 7.5px;
-    background: var(--white);
-    margin-left: 60px;
-  `;
-
-  const RepliesLikeButton = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0px 3.5px;
-
-    div {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-      background: var(--light-gray);
-      border-radius: 5px;
-
-      button {
-        background: transparent;
-        border: none;
-        color: var(--light-grayish-blue);
-        font-weight: 700;
-      }
-
-      span {
-        color: var(--moderate-blue);
-        margin: 10px 0;
-        font-weight: 500;
-      }
-    }
-  `;
-
-  const RepliesInfo = styled.div`
-    margin: 0 10px;
-
-    div {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    p {
-      margin: 8px auto;
-      color: var(--grayish-blue);
-
-      span {
-        color: var(--moderate-blue);
-        font-weight: 500;
-      }
-    }
-  `;
-
-  const RepliesUser = styled.span`
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 32px;
-    }
-
-    h3 {
-      margin: 0 10px;
-    }
-
-    h4 {
-      color: var(--grayish-blue);
-      font-weight: 400;
-    }
-  `;
-
-  const RepliesReplyButton = styled.button`
-    display: flex;
-    align-items: center;
-    background: transparent;
-    border: none;
-    margin: 0px 10px;
-
-    #reply {
-      color: var(--moderate-blue);
-      font-weight: 700;
-      margin-left: 7px;
-      font-size: 13px;
-    }
-
-    :hover {
-      opacity: 0.7;
-    }
-  `;
-
-  const RepliesDeleteButton = styled.button`
-    display: flex;
-    align-items: center;
-    background: transparent;
-    border: none;
-
-    #delete {
-      color: var(--soft-red);
-      font-weight: 700;
-      margin-left: 7px;
-      font-size: 13px;
-    }
-
-    :hover {
-      opacity: 0.7;
-    }
-  `;
-
   const [comments, setComments] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  console.log(showReplyInput);
 
   const openModal = () => {
     setShowModal((toggle) => !toggle);
@@ -315,7 +94,10 @@ const Main = () => {
                 <div>
                   {/* Conditional Rendering */}
                   {user.username != "juliusomo" ? (
-                    <CommentsReplyButton>
+                    <CommentsReplyButton
+                      onClick={() => setShowReplyInput(!showReplyInput)}
+                      // Showing the input
+                    >
                       <img src={Reply} alt="Reply icon" />
                       <p id="reply">Reply</p>
                     </CommentsReplyButton>
@@ -350,6 +132,8 @@ const Main = () => {
               </div>
               <p>{content}</p>
             </CommentsInfo>
+            {/* Displaying the input */}
+            {showReplyInput == true ? <UserInput /> : null}
           </Comments>
           {replies.map(
             ({ id, content, createdAt, score, replyingTo, user }) => (
@@ -375,7 +159,10 @@ const Main = () => {
                       <div>
                         {/* Conditional Rendering */}
                         {user.username != "juliusomo" ? (
-                          <RepliesReplyButton>
+                          <RepliesReplyButton
+                            onClick={() => setShowReplyInput(!showReplyInput)}
+                            // Showing the input
+                          >
                             <img src={Reply} alt="Reply icon" />
                             <p id="reply">Reply</p>
                           </RepliesReplyButton>
@@ -412,6 +199,8 @@ const Main = () => {
                       <span>@{replyingTo}</span> {content}
                     </p>
                   </RepliesInfo>
+                  {/* Displaying the input */}
+                  {showReplyInput == true ? <UserInput /> : null}
                 </Replies>
               </RepliesContainer>
             )
